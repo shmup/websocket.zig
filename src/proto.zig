@@ -126,7 +126,7 @@ pub const Reader = struct {
 
     pub fn fill(self: *Reader, stream: anytype) !void {
         const pos = self.pos;
-        std.debug.assert(self.buf.data.len > pos);
+        if (self.buf.data.len <= pos) return error.Closed;
         const n = try stream.read(self.buf.data[pos..]);
         if (n == 0) {
             return error.Closed;
